@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ToDoContext } from "../../toDoContext";
 import "./ToDoItem.css";
 
-function ToDoItem({ onDelete, onComplete, completed, text }) {
+function ToDoItem() {
+  const { onDelete, onComplete, completed, text } = useContext(ToDoContext);
   return (
     <li className="TodoItem">
       <button
