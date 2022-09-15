@@ -6,7 +6,7 @@ const ToDoContext = React.createContext();
 const ToDoProvider = (props) => {
   const {
     item: todos,
-    savaItem: saveTodos,
+    saveItem: saveTodos,
     loading,
     error,
   } = useLocalStorage("TODOS_v1", []);
@@ -26,9 +26,17 @@ const ToDoProvider = (props) => {
       return todoValue.includes(valueValue);
     });
   }
+  //* logica de crear todo
+  const addTodo = (text) => {
+    const newItem = [...todos];
+    newItem.push({ completed: false, text });
+
+    saveTodos(newItem);
+  };
   //* logica del checked
   const completeTodo = (text) => {
     const index = todos.findIndex((td) => td.text === text);
+    console.log(index);
     const newItem = [...todos];
     newItem[index].completed = true;
     saveTodos(newItem);
@@ -43,6 +51,7 @@ const ToDoProvider = (props) => {
   return (
     <ToDoContext.Provider
       value={{
+        addTodo,
         completedTodos,
         completeTodo,
         deleteTodo,

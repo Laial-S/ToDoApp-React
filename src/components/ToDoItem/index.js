@@ -2,20 +2,20 @@ import React, { useContext } from "react";
 import { ToDoContext } from "../../toDoContext";
 import "./ToDoItem.css";
 
-function ToDoItem() {
-  const { onDelete, onComplete, completed, text } = useContext(ToDoContext);
+function ToDoItem(props) {
+  const { deleteTodo, completeTodo } = useContext(ToDoContext);
   return (
     <li className="TodoItem">
       <button
-        onClick={onComplete}
-        className={`Icon Icon-check ${completed && "Icon-check--active"}`}
+        onClick={() => completeTodo(props.text)}
+        className={`Icon Icon-check ${props.completed && "Icon-check--active"}`}
       >
         √
       </button>
-      <p className={`TodoItem-p ${completed && "TodoItem-p--complete"}`}>
-        {text}
+      <p className={`TodoItem-p ${props.completed && "TodoItem-p--complete"}`}>
+        {props.text}
       </p>
-      <span onClick={onDelete} className="Icon Icon-delete">
+      <span onClick={() => deleteTodo(props.text)} className="Icon Icon-delete">
         X
       </span>
     </li>
