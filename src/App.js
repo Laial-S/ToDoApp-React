@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import useLocalStorage from "./hooks/index.js";
+import React, { useState, useEffect } from "react";
+import useLocalStorage from "./hooks/useLocalStorage.js";
 import AppUI from "./AppUI.js";
 
 // const defaultTodos = [
@@ -10,11 +10,17 @@ import AppUI from "./AppUI.js";
 // ];
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage("TODOS_v1", []);
+  const {
+    item: todos,
+    savaItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_v1", []);
   const [inputValue, setinputValue] = useState("");
   const completedTodos = todos.filter((t) => t.completed).length;
   const totalTodos = todos.length;
-  //* aca van a estar todos lad busquedas que se puedieron hacer
+
+  // aca van a estar todos lad busquedas que se puedieron hacer
   let searchedTodos = [];
   if (!inputValue.length >= 1) {
     searchedTodos = todos;
@@ -43,10 +49,12 @@ function App() {
   return (
     <>
       <AppUI
+        error={error}
+        loading={loading}
         completedTodos={completedTodos}
         totalTodos={totalTodos}
         value={inputValue}
-        setValue={setinputValue}
+        setinputValue={setinputValue}
         searchedTodos={searchedTodos}
         completeTodo={completeTodo}
         deleteTodo={deleteTodo}

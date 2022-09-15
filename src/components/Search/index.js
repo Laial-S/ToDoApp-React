@@ -1,19 +1,17 @@
 import React from "react";
 import "./Search.css";
 
-function Search({ inputValue, setValue }) {
+function Search({ inputValue, setinputValue }) {
   const onChange = (e) => {
-    setValue(e.target.value);
+    setinputValue(e.target.value);
   };
   return (
-    // <>
     <input
       onChange={onChange}
       value={inputValue}
       className="TodoSearch"
       placeholder="Cebolla"
     />
-    // </>
   );
 }
 

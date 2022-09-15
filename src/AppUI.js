@@ -6,6 +6,8 @@ import ToDoItem from "./components/ToDoItem";
 import CreateToDoButton from "./components/CreateToDoButton";
 
 const AppUI = ({
+  loading,
+  error,
   completedTodos,
   totalTodos,
   inputValue,
@@ -17,8 +19,11 @@ const AppUI = ({
   return (
     <>
       <Counter completedTodos={completedTodos} totalTodos={totalTodos} />
-      <Search value={inputValue} setValue={setinputValue} />
+      <Search value={inputValue} setinputValue={setinputValue} />
       <List>
+        {error && <p>desesperate, hubo un error</p>}
+        {loading && <p>estamos cargando, no desesperes</p>}
+        {!loading && !searchedTodos.length && <p>crea tu primer toDo</p>}
         {searchedTodos.map((todo) => (
           <ToDoItem
             onComplete={() => completeTodo(todo.text)}
