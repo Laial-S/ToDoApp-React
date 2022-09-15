@@ -28,6 +28,20 @@ function App() {
       return todoValue.includes(valueValue);
     });
   }
+  //* logica del checked
+  const completeTodo = (text) => {
+    const index = todos.findIndex((td) => td.text === text);
+    const newTodos = [...todos];
+    newTodos[index].completed = true;
+    setTodos(newTodos);
+  };
+  //* logica del delete
+  const deleteTodos = (text) => {
+    const index = todos.findIndex((td) => td.text === text);
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
   return (
     <div>
       <Counter completedTodos={completedTodos} totalTodos={totalTodos} />
@@ -35,6 +49,8 @@ function App() {
       <List>
         {searchedTodos.map((todo) => (
           <ToDoItem
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={() => deleteTodos(todo.text)}
             key={todo.text}
             text={todo.text}
             completed={todo.completed}
