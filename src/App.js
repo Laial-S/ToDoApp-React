@@ -1,19 +1,33 @@
-// import "./App.css";
 import React, { useState } from "react";
-import Counter from "./components/Counter/Counter";
-import Search from "./components/Search/Search";
-import List from "./components/List/List";
-import ToDoItem from "./components/ToDoItem/ToDoItem";
-import CreateToDoButton from "./components/CreateToDoButton/CreateToDoButton";
+import AppUI from "./AppUI.js";
 
-const defaultTodos = [
-  { text: "Cortar cebolla", completed: true },
-  { text: "Tomar el cursso de intro a React", completed: false },
-  { text: "Llorar con la llorona", completed: false },
-  { text: "LALALALAA", completed: false },
-];
+// const defaultTodos = [
+//   { text: "Cortar cebolla", completed: true },
+//   { text: "Tomar el cursso de intro a React", completed: false },
+//   { text: "Llorar con la llorona", completed: false },
+//   { text: "LALALALAA", completed: false },
+// ];
 function App() {
-  const [todos, setTodos] = useState(defaultTodos);
+  //*localStorage
+  //creamos una version de localStorage donde se van a guardar nuestros todos
+  const localStorageTodos = localStorage.getItem("TODOS_v1");
+  //creamos una variable para luego guardar nuestros todos parseados
+  let parsedTodo;
+  // si todavia no hay ningun toDo creado entonces
+  if (!localStorageTodos) {
+    // creamos en localStorage un array vacio y
+    localStorage.setItem("TODOS_v1", JSON.stringify([]));
+    // asignamos a parsedTodo ese array vacio
+    parsedTodo = [];
+    console.log("storage vacio");
+  } else {
+    // sino
+    //asignamos a parsedTodo la version parseada de localStorageTodos que serian nuestros todos ya creados
+    parsedTodo = JSON.parse(localStorageTodos);
+    console.log(parsedTodo, "storage actual");
+  }
+  //y el estado inicial de todos pasa a ser parsedTodos.
+  const [todos, setTodos] = useState(parsedTodo);
   const [inputValue, setinputValue] = useState("");
   const completedTodos = todos.filter((t) => t.completed).length;
   const totalTodos = todos.length;
@@ -33,32 +47,34 @@ function App() {
     const index = todos.findIndex((td) => td.text === text);
     const newTodos = [...todos];
     newTodos[index].completed = true;
+    saveTodos(newTodos);
+  };
+  //creamos una funcion para guardar el estado en localStorage
+  const saveTodos = (newTodos) => {
+    const todosStringified = JSON.stringify(newTodos);
+    localStorage.setItem("TODOS_v1", todosStringified);
     setTodos(newTodos);
   };
   //* logica del delete
-  const deleteTodos = (text) => {
+  const deleteTodo = (text) => {
     const index = todos.findIndex((td) => td.text === text);
     const newTodos = [...todos];
     newTodos.splice(index, 1);
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
+
   return (
-    <div>
-      <Counter completedTodos={completedTodos} totalTodos={totalTodos} />
-      <Search value={inputValue} setValue={setinputValue} />
-      <List>
-        {searchedTodos.map((todo) => (
-          <ToDoItem
-            onComplete={() => completeTodo(todo.text)}
-            onDelete={() => deleteTodos(todo.text)}
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}
-          />
-        ))}
-      </List>
-      <CreateToDoButton />
-    </div>
+    <>
+      <AppUI
+        completedTodos={completedTodos}
+        totalTodos={totalTodos}
+        value={inputValue}
+        setValue={setinputValue}
+        searchedTodos={searchedTodos}
+        completeTodo={completeTodo}
+        deleteTodo={deleteTodo}
+      />
+    </>
   );
 }
 
