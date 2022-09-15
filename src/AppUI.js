@@ -4,11 +4,19 @@ import Search from "./components/Search";
 import List from "./components/List";
 import ToDoItem from "./components/ToDoItem";
 import CreateToDoButton from "./components/CreateToDoButton";
+import Modal from "./components/Modal";
 import { ToDoContext } from "./toDoContext";
 
 const AppUI = () => {
-  const { error, loading, searchedTodos, completeTodo, deleteTodo } =
-    useContext(ToDoContext);
+  const {
+    error,
+    loading,
+    searchedTodos,
+    completeTodo,
+    deleteTodo,
+    isModalOn,
+    setModalOn,
+  } = useContext(ToDoContext);
   return (
     <>
       <Counter />
@@ -28,6 +36,11 @@ const AppUI = () => {
         ))}
       </List>
       <CreateToDoButton />
+      {isModalOn && (
+        <Modal>
+          <p>{searchedTodos[0]?.text}</p>
+        </Modal>
+      )}
     </>
   );
 };

@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ToDoContext } from "../../toDoContext";
 import "./CreateToDoButton.css";
 
 function CreateToDoButton() {
-  return <button className="CreateTodoButton">+</button>;
+  const { isModalOn, setModalOn } = useContext(ToDoContext);
+  const onClickButton = () => {
+    setModalOn(!isModalOn);
+  };
+  return (
+    <button onClick={onClickButton} className="CreateTodoButton">
+      +
+    </button>
+  );
 }
 
 export default CreateToDoButton;

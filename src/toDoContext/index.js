@@ -10,6 +10,7 @@ const ToDoProvider = (props) => {
     loading,
     error,
   } = useLocalStorage("TODOS_v1", []);
+  const [isModalOn, setModalOn] = useState(false);
   const [inputValue, setinputValue] = useState("");
   const completedTodos = todos.filter((t) => t.completed).length;
   const totalTodos = todos.length;
@@ -42,15 +43,17 @@ const ToDoProvider = (props) => {
   return (
     <ToDoContext.Provider
       value={{
-        error,
-        loading,
         completedTodos,
-        totalTodos,
-        inputValue,
-        setinputValue,
-        searchedTodos,
         completeTodo,
         deleteTodo,
+        error,
+        inputValue,
+        isModalOn,
+        loading,
+        searchedTodos,
+        setinputValue,
+        setModalOn,
+        totalTodos,
       }}
     >
       {props.children}
